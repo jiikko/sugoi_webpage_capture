@@ -1,5 +1,5 @@
 # SugoiWebpageCapture
-Simple webpage capture.
+Simple webpage capture, using selenium.
 
 ## Installation
 

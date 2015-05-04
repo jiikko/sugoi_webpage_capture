@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["jiikko"]
   spec.email         = ["n905i.1214@gmail.com"]
   spec.description   = %q{Webpage capture.}
-  spec.summary       = %q{Webpage capture.}
+  spec.summary       = %q{Webpage capture, using selenium.}
   spec.homepage      = ""
   spec.license       = "MIT"
 
