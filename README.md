@@ -1,6 +1,5 @@
 # SugoiWebpageCapture
-
-TODO: Write a gem description
+Simple webpage capture.
 
 ## Installation
 
@@ -20,7 +19,13 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require "sugoi_webpage_capture"
+
+screenshot = SugoiWebpageCapture::Screenshot.new
+tempfile = screenshot.capture(captured_url) # return captured image.
+tempfile.unlink
+```
 
 ## Contributing
 
