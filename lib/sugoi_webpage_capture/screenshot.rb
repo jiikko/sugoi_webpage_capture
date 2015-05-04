@@ -1,4 +1,3 @@
-
 module SugoiWebpageCapture
   class Screenshot
     include Capybara::DSL
@@ -12,6 +11,7 @@ module SugoiWebpageCapture
 
       tempfile = Tempfile.new(["ss", ".png"])
       visit captured_url
+      yield(self) if block_given?
       # TODO Chtome full size capture
       page.driver.save_screenshot(tempfile, full: true)
       tempfile
