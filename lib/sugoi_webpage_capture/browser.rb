@@ -65,6 +65,7 @@ module SugoiWebpageCapture
       puts e.backtrace.join("\n")
       retry_counter = retry_counter + 1
       if retry_counter <= 5
+        print "."
         retry
       else
         puts 'count over.'
