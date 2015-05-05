@@ -24,13 +24,20 @@ module SugoiWebpageCapture
       init
     end
 
-    def capture(captured_url)
+    def capture(captured_url, &block)
+      Capybara.reset_sessions!
       page.current_window.resize_to(*BROWSERS[@browser_name][:size])
-      tempfile = Tempfile.new(["ss", ".png"])
+      @tempfile = Tempfile.new(["ss", ".png"])
       visit captured_url
       yield(self) if block_given?
-      page.driver.save_screenshot(tempfile, full: true) # TODO Chtome full size capture
-      tempfile
+      page.driver.save_screenshot(@tempfile, full: true) # TODO Chtome full size capture
+      @tempfile
+    end
+
+    def quit
+      @tempfile.unlink if @tempfile
+      Capybara.current_session.driver.browser.quit
+      Capybara.delete_sessions!
     end
 
     private
