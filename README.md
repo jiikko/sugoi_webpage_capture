@@ -21,8 +21,13 @@ Or install it yourself as:
 
 ```ruby
 require "sugoi_webpage_capture"
+captured_url = "http://google.com"
 
-screenshot = SugoiWebpageCapture::Screenshot.new
+screenshot = SugoiWebpageCapture::Browser.new
+tempfile = screenshot.capture(captured_url) # return captured image.
+tempfile.unlink
+
+screenshot = SugoiWebpageCapture::Browser.new(:iphone5)
 tempfile = screenshot.capture(captured_url) # return captured image.
 tempfile.unlink
 ```

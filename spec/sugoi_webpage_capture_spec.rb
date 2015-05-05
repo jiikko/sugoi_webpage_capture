@@ -5,32 +5,41 @@ describe SugoiWebpageCapture do
     expect(SugoiWebpageCapture::VERSION).not_to be nil
   end
 
-  describe "webdriber" do
+  describe "browsers" do
+    let(:url) { "http://search.yahoo.co.jp" }
     context 'firefox' do
       describe 'within' do
         it 'be success' do
-          screenshot = SugoiWebpageCapture::Screenshot.new
-          tempfile = screenshot.capture("http://search.yahoo.co.jp") do |x|
+          screenshot = SugoiWebpageCapture::Browser.new
+          tempfile = screenshot.capture(url) do |x|
             x.fill_in 'yschsp', with: "あげぽよ"
             x.find(".b").click
           end
           expect(tempfile).to be_a Tempfile
-          expect(Capybara.current_driver).to eq :selenium
+          expect(Capybara.current_driver).to eq :firefox
         end
       end
 
       it 'be success' do
-        screenshot = SugoiWebpageCapture::Screenshot.new
-        expect(screenshot.capture("http://google.com")).to be_a Tempfile
-        expect(Capybara.current_driver).to eq :selenium
+        screenshot = SugoiWebpageCapture::Browser.new
+        expect(screenshot.capture(url)).to be_a Tempfile
+        expect(Capybara.current_driver).to eq :firefox
+      end
+    end
+
+    context 'iphone5' do
+      it 'be success' do
+        screenshot = SugoiWebpageCapture::Browser.new(:iphone5)
+        expect(Capybara.current_driver).to eq :iphone5
+        expect(screenshot.capture(url)).to be_a Tempfile
       end
     end
 
     context 'chrome' do
       it 'be success' do
-        screenshot = SugoiWebpageCapture::Screenshot.new(browser: :chrome)
-        expect(Capybara.current_driver).to eq :selenium_chrome
-        expect(screenshot.capture("http://google.com")).to be_a Tempfile
+        screenshot = SugoiWebpageCapture::Browser.new(:chrome)
+        expect(Capybara.current_driver).to eq :chrome
+        expect(screenshot.capture(url)).to be_a Tempfile
       end
     end
   end
