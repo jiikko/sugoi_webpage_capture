@@ -7,13 +7,13 @@ module SugoiWebpageCapture
       chrome:  { ua: "", browser: :chrome, size: [1024, 768] },
       iphone5: {
         ua: "Mozilla/5.0 (iPod touch; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A365 Safari/600.1.4",
-        browser: :chrome,
+        browser: :firefox,
         size:[320, 568],
         required_profile: true
       },
       iphone6: {
         ua: "Mozilla/5.0 (iPod touch; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12A365 Safari/600.1.4",
-        browser: :chrome,
+        browser: :firefox,
         size: [375, 667],
         required_profile: true
       },
@@ -52,7 +52,10 @@ module SugoiWebpageCapture
     def opts
       h = { browser: BROWSERS[@browser_name][:browser] }
       if BROWSERS[@browser_name][:required_profile]
-        h.merge!(args: ["--user-agent=#{BROWSERS[@browser_name][:ua]}"])
+        profile = Selenium::WebDriver::Firefox::Profile.new
+        profile["general.useragent.override"] = BROWSERS[@browser_name][:ua]
+        h.merge!(profile: profile)
+        # h.merge!(args: ["--user-agent=#{BROWSERS[@browser_name][:ua]}"]) # for chrome
       end
       h
     end
