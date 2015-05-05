@@ -1,7 +1,7 @@
 module SugoiWebpageCapture
-  attr_reader :tempfile
-
   class Screenshot
+    attr_reader :tempfile
+
     def initialize(tempfile)
       @tempfile = tempfile
     end
