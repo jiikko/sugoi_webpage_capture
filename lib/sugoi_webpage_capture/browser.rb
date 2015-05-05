@@ -37,7 +37,6 @@ module SugoiWebpageCapture
     def quit
       @tempfile.unlink if @tempfile
       Capybara.current_session.driver.browser.quit
-      Capybara.delete_sessions!
     end
 
     private
