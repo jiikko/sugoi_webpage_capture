@@ -23,13 +23,15 @@ Or install it yourself as:
 require "sugoi_webpage_capture"
 captured_url = "http://google.com"
 
-screenshot = SugoiWebpageCapture::Browser.new
-tempfile = screenshot.capture(captured_url) # return captured image.
-tempfile.unlink
+browser = SugoiWebpageCapture::Browser.new
+screenshot = screenshot.capture(captured_url) # return tempfile wrapper instance.
+screenshot.path # /var/tmp.........
+browser.quit
 
-screenshot = SugoiWebpageCapture::Browser.new(:iphone5)
-tempfile = screenshot.capture(captured_url) # return captured image.
-tempfile.unlink
+browser = SugoiWebpageCapture::Browser.new(:iphone5)
+screenshot = screenshot.capture(captured_url)
+screenshot.path
+browser.quit
 ```
 
 ## Contributing
