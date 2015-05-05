@@ -28,7 +28,7 @@ module SugoiWebpageCapture
     def capture(captured_url, &block)
       Capybara.reset_sessions!
       page.current_window.resize_to(*BROWSERS[@browser_name][:size])
-      @screenshot = Screenshot.new(Tempfile.new(["ss", ".jpg"]))
+      @screenshot = Screenshot.new(Tempfile.new(["ss", ".png"]))
       visit captured_url
       yield(self) if block_given?
       capture_with_retry
