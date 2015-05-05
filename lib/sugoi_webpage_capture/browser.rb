@@ -25,12 +25,13 @@ module SugoiWebpageCapture
     end
 
     def capture(captured_url, &block)
+      retry_counter = 0
       Capybara.reset_sessions!
       page.current_window.resize_to(*BROWSERS[@browser_name][:size])
       @screenshot = Screenshot.new(Tempfile.new(["ss", ".png"]))
       visit captured_url
       yield(self) if block_given?
-      page.driver.save_screenshot(@screenshot.tempfile, full: true) # TODO Chtome full size capture
+      capture_with_retry
       @screenshot
     end
 
@@ -50,12 +51,24 @@ module SugoiWebpageCapture
     end
 
     def opts
-      h = {}
+      h = { browser: BROWSERS[@browser_name][:browser] }
       if BROWSERS[@browser_name][:required_profile]
-        h[:args] = ["--user-agent=#{BROWSERS[@browser_name][:ua]}"]
+        h.merge!(args: ["--user-agent=#{BROWSERS[@browser_name][:ua]}"])
       end
-      h[:browser] = BROWSERS[@browser_name][:browser]
       h
+    end
+
+    def capture_with_retry
+      page.driver.save_screenshot(@screenshot.tempfile, full: true) # TODO Chtome full size capture
+    rescue Selenium::WebDriver::Error::UnknownError => e
+      puts e.message
+      puts e.backtrace.join("\n")
+      retry_counter = retry_counter + 1
+      if retry_counter <= 5
+        retry
+      else
+        puts 'count over.'
+      end
     end
   end
 end
