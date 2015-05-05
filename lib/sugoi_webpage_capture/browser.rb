@@ -63,7 +63,7 @@ module SugoiWebpageCapture
       # puts e.message
       # puts e.backtrace.join("\n")
       retry_counter = retry_counter + 1
-      if retry_counter <= 5
+      if retry_counter <= 10
         print "."
         retry
       else
