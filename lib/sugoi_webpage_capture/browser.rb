@@ -63,7 +63,7 @@ module SugoiWebpageCapture
 
     def capture_with_retry(retry_counter = 0)
       page.driver.save_screenshot(@screenshot.tempfile, full: true) # TODO Chtome full size capture
-    rescue Selenium::WebDriver::Error::UnknownError, IO::EAGAINWaitReadable => e
+    rescue Selenium::WebDriver::Error::UnknownError, Net::ReadTimeout => e
       # puts e.message
       # puts e.backtrace.join("\n")
       retry_counter = retry_counter + 1
