@@ -51,7 +51,12 @@ module SugoiWebpageCapture
     end
 
     def opts
-      h = { browser: BROWSERS[@browser_name][:browser] }
+      client = Selenium::WebDriver::Remote::Http::Default.new
+      client.timeout = 10
+      h = {
+        browser: BROWSERS[@browser_name][:browser],
+        http_client: client
+      }
       if BROWSERS[@browser_name][:required_profile]
         profile = Selenium::WebDriver::Firefox::Profile.new
         profile["general.useragent.override"] = BROWSERS[@browser_name][:ua]
