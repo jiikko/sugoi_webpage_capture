@@ -29,9 +29,11 @@ module SugoiWebpageCapture
       Capybara.reset_sessions!
       page.current_window.resize_to(*BROWSERS[@browser_name][:size])
       @screenshot = Screenshot.new(Tempfile.new(["ss", ".png"]))
-      visit captured_url
-      yield(self) if block_given?
-      capture_with_retry
+      with_retry do
+        visit captured_url
+        yield(self) if block_given?
+        page.driver.save_screenshot(@screenshot.tempfile, full: true) # TODO Chtome full size capture
+      end
       @screenshot
     end
 
@@ -66,8 +68,8 @@ module SugoiWebpageCapture
       h
     end
 
-    def capture_with_retry(retry_counter = 0)
-      page.driver.save_screenshot(@screenshot.tempfile, full: true) # TODO Chtome full size capture
+    def with_retry(retry_counter = 0, &block)
+      yield
     rescue Selenium::WebDriver::Error::UnknownError, Net::ReadTimeout => e
       # puts e.message
       # puts e.backtrace.join("\n")
