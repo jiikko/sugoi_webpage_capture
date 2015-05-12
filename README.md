@@ -24,12 +24,21 @@ require "sugoi_webpage_capture"
 captured_url = "http://google.com"
 
 browser = SugoiWebpageCapture::Browser.new
-screenshot = screenshot.capture(captured_url) # return tempfile wrapper instance.
+screenshot = browser.capture(captured_url) # return tempfile wrapper instance.
 screenshot.path # /var/tmp.........
 browser.quit
 
 browser = SugoiWebpageCapture::Browser.new(:iphone5)
-screenshot = screenshot.capture(captured_url)
+screenshot = browser.capture(captured_url)
+screenshot.path
+browser.quit
+
+# require Xvfb
+screenshot = SugoiWebpageCapture::Browser.new(
+    browser: :firefox,
+    options: { headless: true }
+  )
+screenshot = browser.capture(captured_url)
 screenshot.path
 browser.quit
 ```

@@ -19,9 +19,9 @@ module SugoiWebpageCapture
       },
     }
 
-    def initialize(browser_name = :firefox)
+    def initialize(browser_name = :firefox, options: {})
       @browser_name = browser_name
-      init
+      init(options)
     end
 
     # TODO quority
@@ -43,13 +43,18 @@ module SugoiWebpageCapture
 
     private
 
-    def init
+    def init(options)
       raise("not found browser") unless BROWSERS.key?(@browser_name)
       Capybara.run_server = false
       Capybara.register_driver(@browser_name) do |app|
         Capybara::Selenium::Driver.new(app, opts)
       end
       Capybara.current_driver = @browser_name
+      if options[:headless]
+        require 'headless'
+        headless = Headless.new
+        headless.start
+      end
     end
 
     def opts
